@@ -1,28 +1,44 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>atom-table demo</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <title>atom-table demo</title>
 
-    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../atom-table.html">
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 
-    <style is="custom-style" include="demo-pages-shared-styles">
-    </style>
-  </head>
-  <body>
-    <div class="vertical-section-container centered">
-      <h3>Basic atom-table demo</h3>
-      <demo-snippet>
-        <template>
-          <atom-table></atom-table>
-        </template>
-      </demo-snippet>
-    </div>
-  </body>
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../atom-table.html">
+
+  <style is="custom-style" include="demo-pages-shared-styles">
+
+  </style>
+</head>
+
+<body>
+  <div class="vertical-section-container">
+    <h3>Basic atom-table demo</h3>
+    <demo-snippet>
+      <template>
+        <atom-table allow-global-search allow-add-new columns='[{"name":"Concept Name", "property": "concept"},{"name":"# Mappings", "property": "mappingCount"},{"name":"Health", "property": "health"},{"name":"Coverage", "property": "coverage"},{"name":"Owner", "property": "owner"},{"name":"Impact Area", "property": "impactArea"},{"name":"Applications", "property": "applications"}]'
+          items='[{"concept":"FICO-Score","mappingCount":"5","health":"50%","coverage":".001%","owner":"Angela","impactArea":["GDPR","Credit Risk"],"applications":["Credit Risk Assessment","Sales Account Management","Sales Campaign Management","Enterprise Data Warehouse"]}]'>
+          <atom-table-column>
+            <template>
+              {{item}}
+            </template>
+          </atom-table-column>
+          <atom-table-column>
+            <template>
+              {{item}}
+            </template>
+          </atom-table-column>
+        </atom-table>
+      </template>
+    </demo-snippet>
+  </div>
+</body>
+
 </html>

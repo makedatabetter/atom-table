@@ -1,12 +1,16 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../vaadin-grid/vaadin-grid.html">
 <link rel="import" href="../vaadin-grid/vaadin-grid-sorter.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 
 <!--
 `atom-table`
 
 ### Styling
+
 The following custom properties and mixins are available for styling:
+
 Custom property | Description | Default
 ----------------|-------------|----------
 `--atom-table-cell` | Mixin applied to all atom table cells | `{}`
@@ -23,7 +27,6 @@ Custom property | Description | Default
         display: block;
 
         --vaadin-grid-cell: {
-          padding: 0;
           @apply(--atom-table-cell);
         }
         --vaadin-grid-body-cell: {
@@ -34,9 +37,31 @@ Custom property | Description | Default
           @apply(--atom-table-header-cell);
         }
       }
+
+       :host .actions {
+        @apply(--layout);
+        @apply(--layout-end-justified);
+      }
     </style>
-    <vaadin-grid>
-      
+    <div class="actions">
+      <template is="dom-if" if="{{allowGlobalSearch}}">
+        <paper-icon-button class="global-search" icon="icons:search"></paper-icon-button>
+      </template>
+      <template is="dom-if" if="{{allowAddNew}}">
+        <paper-icon-button class="add-new" icon="icons:add"></paper-icon-button>
+      </template>
+    </div>
+    <vaadin-grid items="{{items}}">
+      <template is="dom-repeat" items="{{columns}}" as="column">
+        <vaadin-grid-column>
+          <template class="header">
+            [[column.name]]
+          </template>
+          <!--<template>
+            [[_getPropertyValue(item, column.property)]]
+          </template>-->
+        </vaadin-grid-column>
+      </template>
     </vaadin-grid>
   </template>
 
@@ -65,7 +90,45 @@ Custom property | Description | Default
         columns: {
           type: Array,
           value: []
+        },
+        items: {
+          type: Array,
+          value: []
         }
+      },
+
+      behaviors: [Polymer.Templatizer],
+
+      attached: function () {
+        this._renderRows();
+      },
+
+      _renderRows: function () {
+        var that = this;
+        var grid = Polymer.dom(this.$$('vaadin-grid'));
+        var templates = this.queryAllEffectiveChildren('atom-table-column')
+          .map(function (e) {
+            return e.querySelector('template');
+          });
+
+        this.items.forEach(function (item) {
+
+          templates.forEach(function (template, index) {
+            var clone = that.stamp({});
+            var property = that.columns[index].property;
+            var value = item[property];
+
+            clone['item'] = value;
+          });
+
+        });
+
+
+        this.dataHost = this;
+      },
+
+      _getPropertyValue: function (item, prop) {
+        return item ? item[prop] : '';
       },
 
     });
