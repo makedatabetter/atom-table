@@ -1,0 +1,73 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../vaadin-grid/vaadin-grid.html">
+<link rel="import" href="../vaadin-grid/vaadin-grid-sorter.html">
+
+<!--
+`atom-table`
+
+### Styling
+The following custom properties and mixins are available for styling:
+Custom property | Description | Default
+----------------|-------------|----------
+`--atom-table-cell` | Mixin applied to all atom table cells | `{}`
+`--atom-table-header-cell` | Mixin applied to atom table header cells | `{}`
+`--atom-table-body-cell` | Mixin applied to atom table body cells | `{}`
+
+@demo demo/index.html 
+-->
+
+<dom-module id="atom-table">
+  <template>
+    <style>
+       :host {
+        display: block;
+
+        --vaadin-grid-cell: {
+          padding: 0;
+          @apply(--atom-table-cell);
+        }
+        --vaadin-grid-body-cell: {
+          background-color: #fcfdff;
+          @apply(--atom-table-body-cell);
+        }
+        --vaadin-grid-header-cell: {
+          @apply(--atom-table-header-cell);
+        }
+      }
+    </style>
+    <vaadin-grid>
+      
+    </vaadin-grid>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'atom-table',
+
+      properties: {
+        allowFilters: {
+          type: Boolean,
+          value: false
+        },
+        allowPaging: {
+          type: Boolean,
+          value: false
+        },
+        allowAddNew: {
+          type: Boolean,
+          value: false
+        },
+        allowGlobalSearch: {
+          type: Boolean,
+          value: false
+        },
+        columns: {
+          type: Array,
+          value: []
+        }
+      },
+
+    });
+  </script>
+</dom-module>
