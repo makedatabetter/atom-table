@@ -16,6 +16,10 @@ Custom property | Description | Default
 `--atom-table-cell` | Mixin applied to all atom table cells | `{}`
 `--atom-table-header-cell` | Mixin applied to atom table header cells | `{}`
 `--atom-table-body-cell` | Mixin applied to atom table body cells | `{}`
+`--atom-table-page-size` | Mixin applied to atom table page size element | `{}`
+`--atom-table-page-num` | Mixin applied to atom table page number element | `{}`
+`--atom-table-paging-buttons-container` | Mixin applied to atom table paging buttons container | `{}`
+`--atom-table-paging-buttons` | Mixin applied to atom table paging buttons | `{}`
 
 @demo demo/index.html 
 -->
@@ -25,6 +29,7 @@ Custom property | Description | Default
     <style>
        :host {
         display: block;
+        overflow: auto;
 
         --vaadin-grid-cell: {
           @apply(--atom-table-cell);
@@ -42,6 +47,30 @@ Custom property | Description | Default
         @apply(--layout);
         @apply(--layout-end-justified);
       }
+
+       :host .paging {
+        float: right;
+      }
+
+       :host .pageSize {
+        margin-left: 30px;
+        @apply(--atom-table-page-size);
+      }
+
+       :host .pageNum {
+        margin-left: 30px;
+        @apply(--atom-table-page-num);
+      }
+
+       :host .pagingButtons {
+        display: inline;
+        margin-left: 30px;
+        @apply(--atom-table-paging-buttons-container);
+      }
+
+       :host .pagingButtons paper-icon-button {
+        @apply(--atom-table-paging-buttons);
+      }
     </style>
     <div class="actions">
       <template is="dom-if" if="{{allowGlobalSearch}}">
@@ -51,18 +80,26 @@ Custom property | Description | Default
         <paper-icon-button class="add-new" icon="icons:add"></paper-icon-button>
       </template>
     </div>
-    <vaadin-grid items="{{items}}">
-      <template is="dom-repeat" items="{{columns}}" as="column">
-        <vaadin-grid-column>
-          <template class="header">
-            [[column.name]]
-          </template>
-          <!--<template>
-            [[_getPropertyValue(item, column.property)]]
-          </template>-->
-        </vaadin-grid-column>
+    <div class="grid">
+      <vaadin-grid items="{{items}}">
+        <content></content>
+      </vaadin-grid>
+    </div>
+    <div class="paging">
+      <template is="dom-if" if="{{allowPaging}}">
+        <span>Rows per page</span>
+        <select id="pageSize" class="pageSize">
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+        </select>
+        <span class="pageNum">[[_getStart()]]-[[_getEnd()]] of [[_getTotalRecordsCount()]]</span>
+        <div class="pagingButtons">
+          <paper-icon-button id="prevPage" icon="icons:chevron-left"></paper-icon-button>
+          <paper-icon-button id="nextPage" icon="icons:chevron-right"></paper-icon-button>
+        </div>
       </template>
-    </vaadin-grid>
+    </div>
   </template>
 
   <script>
@@ -78,6 +115,16 @@ Custom property | Description | Default
         allowPaging: {
           type: Boolean,
           value: false
+        },
+        pageSize: {
+          type: Number,
+          value: 10,
+          observer: '_pageSizeChanged'
+        },
+        pageNum: {
+          type: Number,
+          value: 1,
+          observer: '_pageNumChanged'
         },
         allowAddNew: {
           type: Boolean,
@@ -97,40 +144,25 @@ Custom property | Description | Default
         }
       },
 
-      behaviors: [Polymer.Templatizer],
+      _pageSizeChanged: function () {
 
-      attached: function () {
-        this._renderRows();
       },
 
-      _renderRows: function () {
-        var that = this;
-        var grid = Polymer.dom(this.$$('vaadin-grid'));
-        var templates = this.queryAllEffectiveChildren('atom-table-column')
-          .map(function (e) {
-            return e.querySelector('template');
-          });
+      _pageNumChanged: function () {
 
-        this.items.forEach(function (item) {
-
-          templates.forEach(function (template, index) {
-            var clone = that.stamp({});
-            var property = that.columns[index].property;
-            var value = item[property];
-
-            clone['item'] = value;
-          });
-
-        });
-
-
-        this.dataHost = this;
       },
 
-      _getPropertyValue: function (item, prop) {
-        return item ? item[prop] : '';
+      _getStart: function () {
+        return 1;
       },
 
+      _getEnd: function () {
+        return 10;
+      },
+
+      _getTotalRecordsCount: function () {
+        return this.items.length;
+      }
     });
   </script>
 </dom-module>
