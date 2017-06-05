@@ -1,0 +1,25 @@
+{
+  "name": "atom-table",
+  "main": "atom-table.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.4.0",
+    "vaadin-grid": "vaadin/vaadin-grid#^2.0.2"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  },
+  "homepage": "https://github.com/makedatabetter-dev/atom-table",
+  "_release": "0b723e0f1f",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "0b723e0f1ff9a84da2769995acae7cb5bd3b5c33"
+  },
+  "_source": "https://github.com/makedatabetter-dev/atom-table.git",
+  "_target": "master",
+  "_originalSource": "makedatabetter-dev/atom-table",
+  "_direct": true
+}
